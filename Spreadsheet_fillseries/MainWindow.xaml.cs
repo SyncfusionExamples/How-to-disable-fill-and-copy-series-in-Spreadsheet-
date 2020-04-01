@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Syncfusion.UI.Xaml.Spreadsheet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,12 +24,22 @@ namespace Spreadsheet_fillseries
         public MainWindow()
         {
             InitializeComponent();
+            spreadsheet.Create(3);
             spreadsheet.WorkbookLoaded += Spreadsheet_WorkbookLoaded;
+            spreadsheet.WorksheetAdded += Spreadsheet_WorksheetAdded;
+        }
+
+        private void Spreadsheet_WorksheetAdded(object sender, Syncfusion.UI.Xaml.Spreadsheet.Helpers.WorksheetAddedEventArgs args)
+        {
+            spreadsheet.ActiveGrid.FillSeriesController.AllowFillSeries = false;
         }
 
         private void Spreadsheet_WorkbookLoaded(object sender, Syncfusion.UI.Xaml.Spreadsheet.Helpers.WorkbookLoadedEventArgs args)
         {
-            spreadsheet.ActiveGrid.FillSeriesController.AllowFillSeries = false;
+            foreach(var sheet in args.GridCollection)
+            {
+                sheet.FillSeriesController.AllowFillSeries = false;             
+            }
         }
     }
 }
